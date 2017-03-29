@@ -1,4 +1,4 @@
-export const data = [
+{ data : [
   {
     company: 'Apple Pte ltd',
     profile: 'Samsung Group is the largest South Korean chaebol (business conglomerate).',
@@ -114,4 +114,5 @@ export const data = [
       }
     ]
   }
-];
+]
+}

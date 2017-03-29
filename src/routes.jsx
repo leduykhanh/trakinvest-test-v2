@@ -3,10 +3,11 @@ import { Route } from 'react-router'
 import Layout from './containers/Layout'
 import Result from './containers/Result'
 import Home from './components/Home'
-
+import {fetchData} from './actions'
 
 
 export const getRoutes = (store) => {
+    // console.log(store.dispatch);
     let routeConfig = [
 
         {
@@ -14,6 +15,7 @@ export const getRoutes = (store) => {
             component: Layout,
             indexRoute: {
                 getComponent: (nextState,cb)=>{
+                                        fetchData({},store.dispatch);
                                         cb(null, Home);
                                     }
             },

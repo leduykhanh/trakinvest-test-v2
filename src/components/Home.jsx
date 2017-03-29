@@ -1,36 +1,32 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import {languages} from '../data/data.js'
+import {LinkContainer} from 'react-router-bootstrap'
+import {Button} from 'react-bootstrap'
+import {data} from '../data/data.js'
 
 
-
-// Teach Autosuggest how to calculate suggestions for any given input value.
 const getSuggestions = value => {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
 
-  return inputLength === 0 ? [] : languages.filter(lang =>
-    lang.title.toLowerCase().slice(0, inputLength) === inputValue
-  );
+  return inputLength === 0 ? [] : data.filter(datum => datum.company.toLowerCase().slice(0, inputLength) === inputValue);
 };
 const getSectionSuggestions = section => {
-  return section.suggestions;
+  return section.employees;
 }
 const getSectionItems = section => {
-  return section.suggestions;
+  return section.employees;
 }
 const renderSectionTitle = section => {
-	return section.title;
+	return section.company;
 }
-// When suggestion is clicked, Autosuggest needs to populate the input element
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
-const getSuggestionValue = suggestion => suggestion.title;
 
-// Use your imagination to render suggestions.
-const renderSuggestion = suggestion => (
+const getSuggestionValue = suggestion => suggestion.company;
+
+
+const renderSuggestion = (suggestion, query) => (
   <div>
-    {suggestion.text}
+    {suggestion.name + ' (' + suggestion.email + ')'}
   </div>
 );
 
@@ -38,15 +34,10 @@ export default class Home extends React.Component {
   constructor() {
     super();
 
-
-    // Autosuggest is a controlled component.
-    // This means that you need to provide an input value
-    // and an onChange handler that updates this value (see below).
-    // Suggestions also need to be provided to the Autosuggest,
-    // and they are initially empty because the Autosuggest is closed.
     this.state = {
       value: '',
-      suggestions: []
+      suggestions: [],
+      hasMore : false
     };
   }
 
@@ -56,15 +47,16 @@ export default class Home extends React.Component {
     });
   };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
+
   onSuggestionsFetchRequested = ({ value }) => {
+  	let suggestions = getSuggestions(value);
     this.setState({
-      suggestions: getSuggestions(value)
+      suggestions : suggestions.slice(0,3),
+      hasMore: suggestions.length > 3
     });
   };
 
-  // Autosuggest will call this function every time you need to clear suggestions.
+
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
@@ -74,28 +66,43 @@ export default class Home extends React.Component {
   render() {
     const { value, suggestions } = this.state;
 
-    // Autosuggest will pass through all these props to the input element.
+
     const inputProps = {
-      placeholder: 'Type a programming language',
+      placeholder: 'Seach for name of a company (Eg: apple)',
       value,
       onChange: this.onChange
     };
 
-    // Finally, render it!
+
     return (
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSectionSuggestions={getSectionSuggestions}
-        getSuggestionValue={getSuggestionValue}
-        getSectionItems={getSectionItems}
-        renderSuggestion={renderSuggestion}
-        renderSectionTitle={renderSectionTitle}
-        highlightFirstSuggestion={true}
-        inputProps={inputProps}
-        multiSection={true}
-      />
+    	<div className="row">
+	    	<div className="search-input-container col-md-6">
+		      <Autosuggest
+		        suggestions={suggestions}
+		        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+		        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+		        getSectionSuggestions={getSectionSuggestions}
+		        getSuggestionValue={getSuggestionValue}
+		        getSectionItems={getSectionItems}
+		        renderSuggestion={renderSuggestion}
+		        renderSectionTitle={renderSectionTitle}
+		        highlightFirstSuggestion={true}
+		        inputProps={inputProps}
+		        multiSection={true}
+		      />
+			    <LinkContainer to={{ pathname: '/result', query: { search: this.state.value } }}>
+				  <i className="fa fa-search pull-right" />
+				</LinkContainer>
+				<div className="clear-fix" ></div>
+				{this.state.hasMore?
+				<LinkContainer to={{ pathname: '/result', query: { search: this.state.value } }}>
+				  <Button> View All</Button>
+				</LinkContainer>
+				:""}
+			</div>
+
+	    </div>
+
     );
   }
 }

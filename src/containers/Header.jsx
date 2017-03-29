@@ -14,7 +14,20 @@ class Header extends React.Component {
 
   render() {
     return (
-      <div>The TrakInvest Test</div>
+        <Navbar inverse collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/">Jangkoo</a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav>
+              <NavItem eventKey={1} href="/">Technical</NavItem>
+              <NavItem eventKey={2} href="/">Test</NavItem>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
       );
   }
 }
