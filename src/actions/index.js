@@ -2,6 +2,8 @@ import {prepare_url_params} from '../common/util'
 import Type from './actionTypes'
 import {postRequest,getRequest,deleteRequest,putRequest} from '../middlewares/serverRequest'
 import { Schema, arrayOf, normalize } from 'normalizr';
+import {getJSON} from 'redux-api-middleware'
+
 // import {companySchema} from './schema'
 
 export const fetchData = (coys_data,dispatch) =>{
@@ -10,12 +12,8 @@ export const fetchData = (coys_data,dispatch) =>{
    return new Promise((resolve, reject) => {
 	  //  console.log( 
 	   	 dispatch( getRequest(url,[
-	    			{
-		            type:Type.GET_ALL_DATA,
-		            payload: (action, state, res) => {
-		                   return getJSON(res).then((json) => normalize(json, {}));
-		            }
-		          },,
+		          Type.GET_ALL_DATA,
+		          
 		          {
 		            type:Type.GET_ALL_DATA_SUCCESS,
 		            payload: (action, state, res) => {
@@ -30,13 +28,13 @@ export const fetchData = (coys_data,dispatch) =>{
 		          }
 					],true))
 	    .then(response=>{
-	    			console.log(response);
-	                // if (response.error) {
-	                //    reject(response.payload.result);
-	                // } else {
-	                //    resolve(response);
+	    			// console.log("response",response);
+	                if (response.error) {
+	                   reject(response.payload.result);
+	                } else {
+	                   resolve(response);
 
-	                // }
+	                }
 	          			} );
 	    });
 	}

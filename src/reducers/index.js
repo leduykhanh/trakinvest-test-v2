@@ -6,10 +6,11 @@ import Type from '../actions/actionTypes'
 const dataLoad = (state = [], action) => {
 	console.log("action",action);
   switch (action.type) {
-    case "data.jsonGET_ALL_DATA":
-      console.log("reducers called");
-    case "data.jsonGET_ALL_DATA":
-      console.log("reducers failed");
+    case "data.jsonGET_ALL_DATA_SUCCESS":
+      console.log("reducers called",action.payload.result);
+      return Object.assign({},state,action.payload.result)
+    case "data.jsonGET_ALL_DATA_FAIL":
+      // console.log("reducers failed");
     default:
       return state
   }

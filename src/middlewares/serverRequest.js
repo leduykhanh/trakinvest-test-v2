@@ -31,7 +31,7 @@ export const putRequest = (endpoint,types,data,header)=>
 
 export const getRequest = (endpoint,types,public_request=false,send_user=false,header)=>
 {
-    console.log("types",types);
+    // console.log("types",types);
     return {
       [CALL_API]: {
         headers: {
@@ -40,8 +40,6 @@ export const getRequest = (endpoint,types,public_request=false,send_user=false,h
         types: types,
         method: 'GET',
         endpoint: endpoint,
-        public:public_request,
-        user: send_user
       }
     }
 }

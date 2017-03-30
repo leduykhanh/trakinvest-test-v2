@@ -22,7 +22,10 @@ export const getRoutes = (store) => {
             childRoutes: [
                 {
                     path: 'result',
-                    component: Result
+                    getComponent: (nextState,cb)=>{
+                                        fetchData({},store.dispatch);
+                                        cb(null, Result);
+                                    }
                 },
                 
 

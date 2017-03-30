@@ -30,7 +30,7 @@ class Layout extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-
+      data : state.dataLoad.data
     };
 }
 const mapDispatchToProps = (dispatch) => {
