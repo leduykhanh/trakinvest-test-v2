@@ -4,9 +4,12 @@ import { handleActions } from 'redux-actions';
 import Type from '../actions/actionTypes'
 
 const dataLoad = (state = [], action) => {
+	console.log("action",action);
   switch (action.type) {
-    case Type.GET_ALL_DATA_SUCCESS:
+    case "data.jsonGET_ALL_DATA":
       console.log("reducers called");
+    case "data.jsonGET_ALL_DATA":
+      console.log("reducers failed");
     default:
       return state
   }

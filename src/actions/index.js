@@ -4,12 +4,18 @@ import {postRequest,getRequest,deleteRequest,putRequest} from '../middlewares/se
 import { Schema, arrayOf, normalize } from 'normalizr';
 // import {companySchema} from './schema'
 
-export const fetchData = (news_data,dispatch) =>{
-   let url = prepare_url_params('/data.json',news_data);
+export const fetchData = (coys_data,dispatch) =>{
+   let url = prepare_url_params('/data.json',coys_data);
+   // console.log(dispatch);
    return new Promise((resolve, reject) => {
-	   console.log( 
-	   	dispatch( getRequest(url,[
-	    			Type.GET_ALL_DATA,
+	  //  console.log( 
+	   	 dispatch( getRequest(url,[
+	    			{
+		            type:Type.GET_ALL_DATA,
+		            payload: (action, state, res) => {
+		                   return getJSON(res).then((json) => normalize(json, {}));
+		            }
+		          },,
 		          {
 		            type:Type.GET_ALL_DATA_SUCCESS,
 		            payload: (action, state, res) => {
@@ -23,15 +29,14 @@ export const fetchData = (news_data,dispatch) =>{
 		            }
 		          }
 					],true))
-	   	);
-	    // .then(response=>{
+	    .then(response=>{
+	    			console.log(response);
+	                // if (response.error) {
+	                //    reject(response.payload.result);
+	                // } else {
+	                //    resolve(response);
 
-	    //             if (response.error) {
-	    //                reject(response.payload.result);
-	    //             } else {
-	    //                resolve(response);
-
-	    //             }
-	    //       			} );
+	                // }
+	          			} );
 	    });
 	}

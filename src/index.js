@@ -17,9 +17,14 @@ import {REHYDRATE} from 'redux-persist/constants'
 import endpointMiddleware from './middlewares/endpointMiddleware'
 
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware(apiMiddleware)(createStore);
 const routingMiddleware = routerMiddleware(browserHistory)
-// const store=createStoreWithMiddleware(reducers);
+// const store=createStoreWithMiddleware(reducers,{},
+//       compose(
+//         autoRehydrate({
+//           log: true
+//         }))
+//       );
 
   const store = createStore(
       reducers,
@@ -28,18 +33,18 @@ const routingMiddleware = routerMiddleware(browserHistory)
         autoRehydrate({
           log: true
         }),
-        applyMiddleware(createActionBuffer(REHYDRATE),endpointMiddleware,thunk,apiMiddleware, createLogger(),routingMiddleware),
+        applyMiddleware(endpointMiddleware,thunk,apiMiddleware, createLogger(),routingMiddleware),
           window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
       )
-    )
-  if (module.hot) {
-      // Enable Webpack hot module replacement for reducers
-      module.hot.accept('../reducers', () => {
-        const nextRootReducer = require('../reducers').default
-        store.replaceReducer(nextRootReducer)
-      })
-    }
+    );
+  // if (module.hot) {
+  //     // Enable Webpack hot module replacement for reducers
+  //     module.hot.accept('../reducers', () => {
+  //       const nextRootReducer = require('../reducers').default
+  //       store.replaceReducer(nextRootReducer)
+  //     })
+  //   }
 const history = syncHistoryWithStore(browserHistory, store)
 ReactDOM.render(
   <Provider store={store}>
