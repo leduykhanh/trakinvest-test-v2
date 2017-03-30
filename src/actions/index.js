@@ -7,7 +7,8 @@ import { Schema, arrayOf, normalize } from 'normalizr';
 export const fetchData = (news_data,dispatch) =>{
    let url = prepare_url_params('/data.json',news_data);
    return new Promise((resolve, reject) => {
-	   console.log( dispatch( getRequest(url,[
+	   console.log( 
+	   	dispatch( getRequest(url,[
 	    			Type.GET_ALL_DATA,
 		          {
 		            type:Type.GET_ALL_DATA_SUCCESS,
@@ -21,7 +22,8 @@ export const fetchData = (news_data,dispatch) =>{
 		                   return getJSON(res).then((json) => normalize(json, {}));
 		            }
 		          }
-					],true)));
+					],true))
+	   	);
 	    // .then(response=>{
 
 	    //             if (response.error) {

@@ -41,6 +41,7 @@
     "redux": "^3.0.4",
     "redux-action-buffer": "^1.0.1",
     "redux-action-types": "^1.0.1",
+    "redux-actions": "^2.0.1",
     "redux-api-middleware": "^1.0.2",
     "redux-logger": "^3.0.0",
     "redux-persist": "^4.5.0",
